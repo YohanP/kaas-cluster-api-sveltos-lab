@@ -1,0 +1,20 @@
+# Kubernetes
+*.kubeconfig
+.kube/
+
+# Docker / Kind
+.kind/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Temp / Logs
+*.log
+tool-outputs/
+tmp/
+
+# Environment
+.env
+.env.local

@@ -1,0 +1,28 @@
+apiVersion: config.projectsveltos.io/v1beta1
+kind: ClusterProfile
+metadata:
+  name: install-cilium
+spec:
+  clusterSelector: 
+    matchLabels:
+      cni: cilium
+  syncMode: Continuous
+  helmCharts:
+  - repositoryName: cilium-repo
+    repositoryURL: https://helm.cilium.io/
+    chartName: cilium
+    chartVersion: 1.15.5
+    releaseName: cilium
+    releaseNamespace: kube-system
+    values: |
+      ipam:
+        mode: kubernetes
+      hubble:
+        enabled: true
+        relay:
+          enabled: true
+        ui:
+          enabled: true
+      tunnel: vxlan
+      operator:
+        replicas: 1
