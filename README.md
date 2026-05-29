@@ -113,7 +113,7 @@ kubectl apply -f clusters/workload-01.yaml --kubeconfig ./capi-management.kubeco
 
 ---
 
-## 🔍 Visualization Tools
+## Visualization Tools
 
 ### Goldpinger UI (Connectivity Matrix)
 ```bash
