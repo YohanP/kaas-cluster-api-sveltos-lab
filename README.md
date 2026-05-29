@@ -7,6 +7,45 @@ By combining **Cluster API (CAPI)**, **Sveltos**, and **Cilium**, you are buildi
 ---
 
 ## Architecture & Stack
+
+```mermaid
+graph TD
+    subgraph "Management Cluster (k3d)"
+        CAPI[CAPI Controllers]
+        CAPD[Docker Infrastructure Provider]
+        Sveltos[Sveltos Manager]
+        YAML[Cluster Manifests]
+    end
+
+    subgraph "Docker Host"
+        Network[Kind/Docker Bridge Network]
+        Peering[Network Peering: k3d <--> kind]
+    end
+
+    subgraph "Workload Cluster (Containers)"
+        CP[Control Plane Node]
+        Worker[Worker Node]
+        Cilium[Cilium CNI - eBPF]
+        Goldpinger[Goldpinger Mesh]
+    end
+
+    %% Provisioning flow
+    YAML --> CAPI
+    CAPI --> CAPD
+    CAPD --> CP
+    CAPD --> Worker
+
+    %% Add-ons flow
+    Sveltos -- "Remote Management" --> CP
+    Sveltos --> Cilium
+    Sveltos --> Goldpinger
+
+    %% Networking
+    CP --- Network
+    Worker --- Network
+    Peering --- Network
+```
+
 ### 1. Management Cluster (k3d)
 A lightweight k3s cluster running in Docker. It acts as the **Control Plane of the Control Planes**, hosting all the operators and controllers.
 
